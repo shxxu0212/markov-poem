@@ -1,0 +1,4 @@
+# Don't upload these files to github
+*.pyc
+*.db
+*.sql
