@@ -1,6 +1,7 @@
 """Generate Markov text from text files."""
 
 from random import choice
+import sys
 
 
 def open_and_read_file(file_path):
@@ -16,8 +17,17 @@ def open_and_read_file(file_path):
         return text
 
 
-def make_chains(text_string):
-    """Take input text as string; return dictionary of Markov chains.
+def make_word_list(text_string):
+    """ takes input text as string; creates list of individual words """
+    words = text_string.split(" ")
+    punctuations = '?!.'
+    for word in words:
+        if len(word) > 1 and word[-2] in punctuations:
+            word = word.rstrip()
+    return words
+
+def make_chains(words):
+    """Take input words as list; return dictionary of Markov chains.
 
     A chain will be a key that consists of a tuple of (word1, word2)
     and the value would be a list of the word(s) that follow those two
@@ -43,8 +53,6 @@ def make_chains(text_string):
 
     chains = {}
 
-    words = text_string.split(" ")
-
     for i in range(len(words)-2):
         # creates bigram from first two words in text string, 
         # with each iteration moves down one word
@@ -62,10 +70,10 @@ def make_chains(text_string):
     return chains
 
 
-def make_text(chains):
+def make_text(chains, start_words):
     """Return text from chains."""
     # explicit start
-    words = ['Would', 'you']
+    words = start_words
 
     while True:
         bigram = (words[-2], words[-1])
@@ -80,15 +88,24 @@ def make_text(chains):
     return " ".join(words)
 
 
-input_path = "green-eggs.txt"
+if len(sys.argv) > 1:
+    input_path = sys.argv[1]
+else:
+    input_path = 'green-eggs.txt'
 
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
 
+# list of words
+words = make_word_list(input_text)
+
 # Get a Markov chain
-chains = make_chains(input_text)
+chains = make_chains(words)
+
+# make starting words for print
+start_words = [words[0], words[1]]
 
 # Produce random text
-random_text = make_text(chains)
+random_text = make_text(chains, start_words)
 
 print random_text
