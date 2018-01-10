@@ -28,9 +28,6 @@ def make_char_list(words):
 def make_chains(words, chars, n):
     character_chains = {}
 
-
-
-
     for i in range(len(words)-n):
         ngram = tuple(words[i:i+n])
         next_word = words[i+n]
@@ -45,29 +42,31 @@ def make_chains(words, chars, n):
 
 
 # ------------- Calling the script ------------- #
-n = int(raw_input("How many words should be in our ngram? "))
-print "\n"
 
-if len(sys.argv) > 1:
-    input_path = sys.argv[1]
-else:
-    input_path = 'waiting_for_godot.txt'
+if __name__ == "__main__":
+    n = int(raw_input("How many words should be in our ngram? "))
+    print "\n"
 
-input_text = markov.open_and_read_file(input_path)
+    if len(sys.argv) > 1:
+        input_path = sys.argv[1]
+    else:
+        input_path = 'waiting_for_godot.txt'
 
-# list of words
-words = markov.make_word_list(input_text)
+    input_text = markov.open_and_read_file(input_path)
 
-# make character list
-chars = make_char_list(words)
+    # list of words
+    words = markov.make_word_list(input_text)
 
-# Get a Markov chain
-chains = make_chains(words, chars, n)
+    # make character list
+    chars = make_char_list(words)
 
-# make starting words for print
-start_words = words[0:n]
+    # Get a Markov chain
+    chains = make_chains(words, chars, n)
 
-# Produce random text
-random_text = markov.make_text(chains, start_words, n)
+    # make starting words for print
+    start_words = words[0:n]
 
-print random_text
+    # Produce random text
+    random_text = markov.make_text(chains, start_words, n)
+
+    print random_text
