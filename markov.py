@@ -21,14 +21,17 @@ def make_word_list(text_string):
     """ takes input text as string; creates list of individual words """
     words = text_string.split(" ")
     punctuations = "?!."
-    # for i in range(len(words)):
+    # creates tuple of index and word
     for i, word in enumerate(words):
+        # if word has a line break in it
         if "\n" in word:
-            split = word.split("\n")
-            split = [word for word in split if word]  # != ""]
-            if split[0][-1] in punctuations:
-                split[0] = split[0] + "\n"
-            words[i:i+1] = split
+            # remove the line break & put into temporary variable tokens
+            tokens = word.split("\n")
+            # if word is not False, put word in array
+            tokens = [word for word in tokens if word]  # != ""]
+            if tokens[0][-1] in punctuations:
+                tokens[0] = tokens[0] + "\n"
+            words[i:i+1] = tokens
     return words
 
 def make_chains(words):
