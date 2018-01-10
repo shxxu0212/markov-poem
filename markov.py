@@ -20,10 +20,15 @@ def open_and_read_file(file_path):
 def make_word_list(text_string):
     """ takes input text as string; creates list of individual words """
     words = text_string.split(" ")
-    punctuations = '?!.'
-    for word in words:
-        if len(word) > 1 and word[-2] in punctuations:
-            word = word.rstrip()
+    punctuations = "?!."
+    # for i in range(len(words)):
+    for i, word in enumerate(words):
+        if "\n" in word:
+            split = word.split("\n")
+            split = [word for word in split if word]  # != ""]
+            if split[0][-1] in punctuations:
+                split[0] = split[0] + "\n"
+            words[i:i+1] = split
     return words
 
 def make_chains(words):
@@ -66,7 +71,7 @@ def make_chains(words):
         chains[bigram] = next_words
 
     # to prevent printing error, assign value of end of text file key to empty
-    chains[(words[-2], words[-1])] = []
+    chains[(words[-2], words[-1])] = [None]
     return chains
 
 
@@ -78,13 +83,16 @@ def make_text(chains, start_words):
     while True:
         bigram = (words[-2], words[-1])
         # stop loop when you get to the end
-        if chains[bigram] == []:
-            break
+        # if chains[bigram] == []:
+        #     break
         # randomly choose a word from value set of each bigram key and add to
         # word list, which we will join & print as string
         next_word = choice(chains[bigram])
+        if next_word is None:
+            break
         words.append(next_word)
 
+    words[0] = " " + words[0]
     return " ".join(words)
 
 
