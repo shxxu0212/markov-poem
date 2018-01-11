@@ -1,4 +1,5 @@
-# Don't upload these files to github
+# Ignore these files
+secrets.sh
 *.pyc
-*.db
-*.sql
+*.txt
+*.png
